@@ -1,0 +1,12 @@
+onsumer Keyをセットして認証に使うハンドラを生成する
+#ハンドラとは、「条件が整ったら呼ばれる関数（メソッド）」
+twitter_auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+#今回はすでに認証済みのアクセストークンを使う
+twitter_auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+
+#tweepyに認証情報を渡したAPIを叩くためのオブジェクトを生成
+api = tweepy.API(twitter_auth)
+
+timeline = api.user_timeline()
+
+search = api.search(q = 'tiffany' 'リンク', lang='ja', count=20)
