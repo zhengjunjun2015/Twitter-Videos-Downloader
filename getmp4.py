@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import tweepy
 import sys
 import json
@@ -12,6 +13,7 @@ def authorize(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET):
 def get_timeline(twitter_auth, pages):
     api = tweepy.API(twitter_auth)
     #timeline = api.search(q = 'filter:native_video',  lang='ja', count=50)
+    # とりあえずユーザーから取得
     timeline = api.user_timeline('buzzgamisama', count=pages, )
     return timeline
 
@@ -34,15 +36,18 @@ def save_videos(urls):
         response = requests.get(url)
         with open('./results/'+ str(today) + str(count) + '.mp4', 'wb') as f:
             f.write(response.content)
-        sys.stdout.write('🥺 ')
+        sys.stdout.write('.')
         sys.stdout.flush()
         count += 1
 
 def main():
-    consumer_key = 'kdqWRbGA2s7sHjBHSx0VrVUJd'
-    consumer_secret = 'GerdaAl9tSplFtZT9QOakiah4QoiuCrg0qVd48ZIpLDeV44EGt'
-    access_token = '796211582837501953-AAOcqcl02kRIhwUR86XvFKW6dTN99dY'
-    access_token_secret = 'd0lb9qtZQXD5Gu2D4LFZj1RuWbBlfu4ThGCgm8CLBYKsT'
+    with open('keys.txt', 'r') as f:
+        keys = f.read().split('\n'[0])
+
+    consumer_key = keys[0]
+    consumer_secret = keys[1]
+    access_token = keys[2]
+    access_token_secret = keys[3]
 
     timeline = get_timeline(authorize(consumer_key, consumer_secret, access_token, access_token_secret), 10)
     contents = get_url_and_text(timeline)
